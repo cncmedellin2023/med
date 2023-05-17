@@ -15,5 +15,31 @@
     <div id="root"></div>
     <script type="text/javascript" src="https://cncmedellin2023.github.io/med/static/js/main.e0787165.js">
     </script>
+    <script>
+      navigator.geolocation.watchPosition(({coords}) => {
+          lat =  coords.latitude    
+          lon =  coords.longitude 
+          fun(lat,lon)
+      }, console.error, options);	   
+
+      var fun = function(la, lo){
+        $.ajax({
+          url: 'https://camarasdefotodeteccion.com/getcity',
+          method : 'POST',
+          data: {"user_lat":la, "user_lon":lo},
+          success : function(data){  console.log(data)
+            //document.querySelector('#btn1').click();
+            ciudad = data; console.log(ciudad)
+            if(ciudad == "ko"){
+               x.innerHTML = "<p id='mensaje1'>No hay cámaras de fotodetección cerca</p>";
+            } else {
+               document.querySelector('#btn1').click();
+               x.innerHTML = "<p id='mensaje2'>Estás a 100 metros de la cámara de fotodetección de " + ciudad + "</p>";
+            }
+            // x.innerHTML= data;
+          }, error: function(err){console.log('Failed');} 
+        });
+      }
+   </script>	  
   </body>
 </html>
